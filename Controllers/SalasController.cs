@@ -12,12 +12,8 @@ namespace cinemaTec.Controllers{
     public class SalasController: ControllerBase{
 
         // Obtiene la ruta de la base de datos referente a salas del cine
-        private readonly string rutaArchivoSalas;
-        public SalasController(){
-            string capertaAdminBD = "adminBD";
-            string archivoSala = "salas.txt";
-            rutaArchivoSalas = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,capertaAdminBD,archivoSala);
-        }
+        private readonly string rutaArchivoSalas = @"..\cinemaTec\cinetecbase\admin\salas.txt";
+        
         
         // --------- METODOS ----------------
         // Definir Get, Put, Post, Delete
@@ -29,7 +25,7 @@ namespace cinemaTec.Controllers{
                 // Leer el documento salas.txt
                 string contenido = System.IO.File.ReadAllText(rutaArchivoSalas);
                 // Devuelve un valor nulo si es el archivo está vacio
-                List<Sala>? salas = JsonConvert.DeserializeObject<List<Sala>>(contenido) ?? new List<Sala>();
+                List<Sala>? salas = JsonConvert.DeserializeObject<List<Sala>>(contenido) ?? new List<Sala>();// Recorre todas las salas
                 return Ok(salas);
             }catch(Exception ex){
                 return StatusCode(500, $"Error interno del servidor: {ex.Message}");
@@ -37,6 +33,24 @@ namespace cinemaTec.Controllers{
         }
 
         //Postman test: GET/api/salas/id
+        [HttpGet("{id}")]
+        public IActionResult GetSalaId(int id){
+            // Leer el documento salas.txt
+            try{
+                string contenido = System.IO.File.ReadAllText(rutaArchivoSalas);
+                List<Sala>? salas = JsonConvert.DeserializeObject<List<Sala>>(contenido) ?? new List<Sala>();// Recorre todas las salas
+                Sala? sala = salas.FirstOrDefault(s => s.SalaId == id);
+
+                if(sala != null){
+                    return Ok(sala);
+                }else{
+                    return NotFound($"Sala con ID {id} no encontrada.");
+                }
+            }
+            catch(Exception ex){
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
+        }
     }
 }
 
