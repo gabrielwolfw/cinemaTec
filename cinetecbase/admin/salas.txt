@@ -1,0 +1,1 @@
+[{"SalaId":1,"NombreSucursal":"Cine Max","CantidadFilas":2,"CantidadColumnas":23,"Capacidad":15}]

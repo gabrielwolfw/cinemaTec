@@ -60,7 +60,6 @@ namespace cinemaTec.Controllers{
         public IActionResult AgregarSala([FromBody] Sala nuevaSala){
             try
             {
-                
                 nuevaSala.SalaId = proximoId;
                 proximoId++;
 
@@ -76,11 +75,9 @@ namespace cinemaTec.Controllers{
 
                 string nuevaSalaJson = JsonConvert.SerializeObject(salas);
                 string rutaConNuevaSala = @"..\cinemaTec\cinetecbase\admin\salas.txt";
-                using (StreamWriter writer = new StreamWriter(rutaConNuevaSala, true)) // El segundo argumento 'true' indica que se agregará al archivo existente
-                {
-                writer.WriteLine(nuevaSalaJson);
-                }
 
+                // Escribir el JSON en el archivo, sobrescribiendo el contenido anterior
+                System.IO.File.WriteAllText(rutaConNuevaSala, nuevaSalaJson);
                 return StatusCode(201, "Sala agregada con éxito");
             }
             catch(Exception ex){
