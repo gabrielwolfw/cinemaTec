@@ -11,7 +11,11 @@ namespace cinemaTec.Controllers{
     [ApiController]
     public class SalasController: ControllerBase{
 
-        // Obtiene la ruta de la base de datos referente a salas del cine
+        // Lee una lista de las salas
+        private readonly List<Sala> salas = new();
+        // Genera los Id's
+        private int proximoId = 1; // Inicializa con el primer ID
+        // Lee la ruta de la base de datos referente a salas del cine
         private readonly string rutaArchivoSalas = @"..\cinemaTec\cinetecbase\admin\salas.txt";
         
         
@@ -50,6 +54,39 @@ namespace cinemaTec.Controllers{
             catch(Exception ex){
                 return StatusCode(500, $"Error interno del servidor: {ex.Message}");
             }
+        }
+
+        [HttpPost]
+        public IActionResult AgregarSala([FromBody] Sala nuevaSala){
+            try
+            {
+                
+                nuevaSala.SalaId = proximoId;
+                proximoId++;
+
+                salas.Add(new Sala
+                {
+
+                    SalaId = nuevaSala.SalaId,
+                    NombreSucursal = nuevaSala.NombreSucursal,
+                    CantidadColumnas = nuevaSala.CantidadColumnas,
+                    CantidadFilas = nuevaSala.CantidadFilas,
+                    Capacidad = nuevaSala.Capacidad
+                });
+
+                string nuevaSalaJson = JsonConvert.SerializeObject(salas);
+                string rutaConNuevaSala = @"..\cinemaTec\cinetecbase\admin\salas.txt";
+                using (StreamWriter writer = new StreamWriter(rutaConNuevaSala, true)) // El segundo argumento 'true' indica que se agregará al archivo existente
+                {
+                writer.WriteLine(nuevaSalaJson);
+                }
+
+                return StatusCode(201, "Sala agregada con éxito");
+            }
+            catch(Exception ex){
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
+
         }
     }
 }
