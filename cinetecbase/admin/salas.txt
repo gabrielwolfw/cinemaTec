@@ -1,1 +1,4 @@
-[{"SalaId":1,"NombreSucursal":"Cine Max","CantidadFilas":2,"CantidadColumnas":23,"Capacidad":15}]
+
+[{"SalaId":3,"NombreSucursal":"Metri","CantidadFilas":23,"CantidadColumnas":23,"Capacidad":15}]
+[{"SalaId":4,"NombreSucursal":"Mealooo","CantidadFilas":23,"CantidadColumnas":23,"Capacidad":15}]
+[{"SalaId":5,"NombreSucursal":"Moo","CantidadFilas":23,"CantidadColumnas":23,"Capacidad":15}]

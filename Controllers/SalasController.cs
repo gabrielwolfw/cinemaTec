@@ -14,10 +14,9 @@ namespace cinemaTec.Controllers{
         // Lee una lista de las salas
         private readonly List<Sala> salas = new();
         // Genera los Id's
-        private int proximoId = 1; // Inicializa con el primer ID
+        private static int proximoId = 1; // Inicializa con el primer ID
         // Lee la ruta de la base de datos referente a salas del cine
         private readonly string rutaArchivoSalas = @"..\cinemaTec\cinetecbase\admin\salas.txt";
-        
         
         // --------- METODOS ----------------
         // Definir Get, Put, Post, Delete
@@ -60,8 +59,9 @@ namespace cinemaTec.Controllers{
         public IActionResult AgregarSala([FromBody] Sala nuevaSala){
             try
             {
+                
                 nuevaSala.SalaId = proximoId;
-                proximoId++;
+                proximoId += 1;
 
                 salas.Add(new Sala
                 {
@@ -77,7 +77,10 @@ namespace cinemaTec.Controllers{
                 string rutaConNuevaSala = @"..\cinemaTec\cinetecbase\admin\salas.txt";
 
                 // Escribir el JSON en el archivo, sobrescribiendo el contenido anterior
-                System.IO.File.WriteAllText(rutaConNuevaSala, nuevaSalaJson);
+                using (StreamWriter writer = new StreamWriter(rutaConNuevaSala, append: true))
+                {
+                    writer.WriteLine(nuevaSalaJson);
+                    }
                 return StatusCode(201, "Sala agregada con éxito");
             }
             catch(Exception ex){
@@ -85,6 +88,10 @@ namespace cinemaTec.Controllers{
             }
 
         }
+        public int GetProximoId()
+        {
+            return proximoId;
+            }
     }
 }
 
