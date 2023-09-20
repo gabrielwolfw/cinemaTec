@@ -8,13 +8,17 @@ import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { ClienteLoginComponent } from './cliente-login/cliente-login.component';
 import { MenuAdminComponent } from './menu-admin/menu-admin.component';
 
+
+
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     AdminLoginComponent,
     ClienteLoginComponent,
-    MenuAdminComponent
+    MenuAdminComponent,
+
+   
   ],
   imports: [
     BrowserModule,

@@ -1,1 +1,26 @@
-<p>cliente-login works!</p>
+<div class="primary-container">
+    <div class="login-overlay">
+        <h3 class="login-title">
+            Inicio de sesión
+        </h3>
+        <div class="overlay-separator"></div>
+        <div class="overlay-body">
+             <!-- Campo de entrada de nombre de usuario  -->
+             <div class="form-group ">
+                <label for="username">Nombre de Usuario:</label>
+                <input type="text" id="username" name="username" class="form-control" />
+            </div>
+            
+            <div class="input-group form-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                </div>
+                <input id="adminCode" type="password" class="form-control" placeholder="Ingrese la contraseña">
+            </div>
+
+            <button class="btn" [routerLink]="['/home']">Login</button> 
+            <div class="control-container form-group">
+            </div>
+        </div>
+    </div>
+</div>
