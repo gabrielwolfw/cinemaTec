@@ -10,30 +10,25 @@
     margin-left: -50vw;
     margin-right: -50vw;
     margin-top: -15px;
-
+    color: rgb(255, 255, 255);
     background-image: url('https://c1.wallpaperflare.com/preview/736/348/997/theater-theatre-cinema-movies.jpg');
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
-    /* background-color: red; */
 }
 
 .login-overlay {
     align-self: center;
-    width: 25%;
+    width: 20%;
     border-radius: 10px;
-    background-color: rgba(251, 250, 250, 0.5);
+    background-color: rgba(162, 80, 80, 0.5);
     color: rgb(8, 8, 8);
 }
 
 .login-title {
     padding: 12px 25px;
-}
+    color: rgb(255, 255, 255);
 
-.overlay-separator {
-    width: 100%;
-    height: 1px;
-    background-color: rgb(8, 8, 8);
 }
 
 .overlay-body {
@@ -41,6 +36,7 @@
     padding-bottom: 0px;
 }
 .control-container {
+    align-self: center;
     display: flex;
     flex: row wrap;
     margin-bottom: 15px;
@@ -62,6 +58,8 @@
 }
 
 .login-btn {
+    align-self: center;
+
     color: black;
     background-color: #FFC312;
     width: 100px;
@@ -69,5 +67,5 @@
 
 .login-btn:hover {
     color: black;
-    background-color: white;
+    background-color: rgb(202, 136, 136);
 }

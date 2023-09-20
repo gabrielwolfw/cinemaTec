@@ -1,0 +1,30 @@
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+<div class="primary-container">
+  <hr>
+  <div class="card bg-light article-custom">
+    <article class="card-body-mx-auto">
+      <h1 class="card-title mt-3 text-center custom-margin">Bienvenidos a la Feria Virtual del Agricultor</h1>
+      <h3 class="card-title mt-3 text-center custom-margin">Por favor seleccione la acción que desea realizar:</h3>
+
+      <div class="row row-custom">
+
+        <div class="col col-custom">
+          <button class="btn" [routerLink]="['/producer']"><i class="fa-solid fa-film"></i>Registrar Película</button>
+        </div>
+
+        <div class="col col-custom">
+          <button class="btn" [routerLink]="['/manage-affiliations']"><i class="fa-solid fa-store"></i>Registrar Sucursal</button>
+        </div>
+
+        <div class="col col-custom">
+          <button class="btn" [routerLink]="['/category']"><i class="fas fa-box-open"></i>Registrar sala</button>
+        </div>
+
+        <div class="col col-custom">
+            <button class="btn" [routerLink]="['/']"><i class="far fa-newspaper"></i>Asigar Proyecciones</button>
+          </div>
+      </div>
+    </article>
+  </div>
+</div>
