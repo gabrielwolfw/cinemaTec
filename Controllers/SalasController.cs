@@ -163,6 +163,57 @@ namespace cinemaTec.Controllers{
                 return StatusCode(500, $"Error interno del servidor: {ex.Message}");
             }
         }
+        // Método DELETE: Eliminar una sala
+        // Postman test: DELETE/api/salas/1 (donde 1 es el ID de la sala que deseas eliminar)
+        [HttpDelete("{salaid}")]
+        public IActionResult EliminarSala(int salaid)
+        {
+            try
+            {
+                // Buscar la sala con el ID especificado
+                Sala? salaAEliminar = salas.FirstOrDefault(s => s.SalaId == salaid);
+
+                if (salaAEliminar != null)
+                {
+                    // Remover la sala de la lista en memoria
+                    salas.Remove(salaAEliminar);
+
+                    using (var package = new ExcelPackage(new FileInfo(rutaArchivoSalas)))
+                    {
+                        var hojaSalas = package.Workbook.Worksheets["Salas"];
+                        if (hojaSalas != null && hojaSalas.Dimension != null)
+                        {
+                            int filaAEliminar = -1;
+
+                            // Busca la fila que contiene la sala con el ID especificado
+                            for (int fila = 2; fila <= hojaSalas.Dimension.Rows; fila++)
+                            {
+                                if (Convert.ToInt32(hojaSalas.Cells[fila, 1].Value) == salaid)
+                                {
+                                    filaAEliminar = fila;
+                                    break;
+                                }
+                            }
+
+                            if (filaAEliminar > 0)
+                            {
+                                hojaSalas.DeleteRow(filaAEliminar, 1); // Elimina la fila
+                                package.Save(); // Guarda el archivo Excel
+                            }
+                        }
+                    }
+                    return NoContent(); // Respuesta HTTP 204 (NoContent) indicando éxito sin contenido
+                }
+                else
+                {
+                    return NotFound($"Sala con ID {salaid} no encontrada.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
+        }
 
     }
 }
