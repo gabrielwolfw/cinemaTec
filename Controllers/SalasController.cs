@@ -14,21 +14,17 @@ namespace cinemaTec.Controllers{
     [ApiController]
     public class SalasController: ControllerBase{
 
-        // Lee una lista de las salas
-        private readonly List<Sala> salas = new();
-
-
-        // Genera los Id's
-        private static int proximoId = 1; // Inicializa con el primer ID
-
+        // Lista Global de todas las salas existentes
+        private List<Sala> salas = new();
 
         // Lee la ruta de la base de datos referente a salas del cine
         private readonly string rutaArchivoSalas = @"..\cinemaTec\cinetecbase\salas.xlsx";
         
+
+
+
         // --------- METODOS ----------------
         // Definir Get, Put, Post, Delete
-
-
 
         // Metodo Get: Consulta todas las salas
         //Postman test: GET/api/salas
@@ -69,7 +65,7 @@ namespace cinemaTec.Controllers{
         // Postman test: GET/api/salas/id
         // Metodo Get: Consulta un valor especifico de Id de las Salas
         [HttpGet("{salaId}")]
-        public IActionResult GetSalaId(string salaId){
+        public IActionResult GetSalaId(string? salaId){
             try{
                 // Evitar que el valor salaId no sea nulo
                 if (salaId != null)
@@ -89,6 +85,45 @@ namespace cinemaTec.Controllers{
                 return Ok(null);
             }catch(Exception ex)
             {
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
+        }
+
+
+        // Metodo Post: Ingresa valor de SalaId, Nombre Sucursal, Cantidad Columnas, Cantidad Filas, Capacidad
+        // Post Testing:
+        [HttpPost]
+        public IActionResult AgregarSala([FromBody] Sala nuevaSala){
+            try{
+                using(var package = new ExcelPackage(new FileInfo(rutaArchivoSalas))){
+
+                    var hojaSalas = package.Workbook.Worksheets["Salas"];
+
+                    // Comprueba que la hoja Sala exista, para almacenar los datos
+                    if(hojaSalas == null){
+                        return StatusCode(500, "La hoja de trabajo 'Salas' no existe.");
+                    }
+
+                    // Comprueba que el ID de la sala no este repetido
+                    if(salas.Any(s => s.SalaId == nuevaSala.SalaId))
+                    {
+                        return BadRequest("El ID de sala ya existe.");
+                    }
+
+                    int filaNuevaSala = hojaSalas.Dimension.Rows + 1; // Obtener la próxima fila vacía
+                    hojaSalas.Cells[filaNuevaSala, 1].Value = nuevaSala.SalaId;
+                    hojaSalas.Cells[filaNuevaSala, 2].Value = nuevaSala.NombreSucursal;
+                    hojaSalas.Cells[filaNuevaSala, 3].Value = nuevaSala.CantidadFilas;
+                    hojaSalas.Cells[filaNuevaSala, 4].Value = nuevaSala.CantidadColumnas;
+                    hojaSalas.Cells[filaNuevaSala, 5].Value = nuevaSala.Capacidad;
+
+                    // Guarda las modificaciones en el excel
+                    package.Save();
+                }
+                // En caso de que la sala se haya creado de manera exitosa.
+                return StatusCode(201, "Sala creada con éxito");
+
+            }catch(Exception ex){
                 return StatusCode(500, $"Error interno del servidor: {ex.Message}");
             }
         }
