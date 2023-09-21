@@ -7,8 +7,7 @@ using System.Linq;
 namespace cinemaTec.Controllers{
     [Route("api/auth")]
     [ApiController]
-    public class AuthController : ControllerBase
-    {
+    public class AuthController : ControllerBase{
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginModel model)
         {
@@ -57,4 +56,73 @@ namespace cinemaTec.Controllers{
             return "TuTokenJWTGenerado";
         }
     }
+        [HttpPost("register")]
+    public IActionResult Register([FromBody] AdminData newAdmin)
+    {
+        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "cinetecbase", "login.xlsx"); // Ruta del archivo Excel
+
+        using (var stream = System.IO.File.Open(filePath, FileMode.Open, FileAccess.ReadWrite)) // Cambiamos FileAccess a ReadWrite
+        {
+            using (var reader = ExcelReaderFactory.CreateReader(stream))
+            {
+                reader.ChangeSheet(0);
+
+                var adminDataList = new List<AdminData>();
+
+                while (reader.Read())
+                {
+                    var username = reader.GetString(0);
+                    var password = reader.GetString(1);
+
+                    if (!string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password))
+                    {
+                        adminDataList.Add(new AdminData { Username = username, Password = password });
+                    }
+                }
+
+                // Verifica si el nombre de usuario ya existe
+                if (adminDataList.Any(a => a.Username == newAdmin.Username))
+                {
+                    return BadRequest("El nombre de usuario ya existe.");
+                }
+
+                // Guarda el nuevo administrador en el archivo Excel
+                adminDataList.Add(newAdmin);
+                SaveAdminDataToExcel(adminDataList, filePath);
+
+                // Retorna un mensaje de éxito
+                return Ok("Registro exitoso.");
+            }
+        }
+
+        // En caso de error
+        return StatusCode(500, "Error interno del servidor.");
+    }
+
+   private void SaveAdminDataToExcel(List<AdminData> adminDataList, string filePath)
+{
+    using (var package = new ExcelPackage(new FileInfo(filePath)))
+    {
+        var worksheet = package.Workbook.Worksheets.FirstOrDefault() ?? package.Workbook.Worksheets.Add("Admins");
+
+        // Encabezados (si no existen)
+        if (worksheet.Cells["A1"].Value == null)
+        {
+            worksheet.Cells["A1"].Value = "Username";
+            worksheet.Cells["B1"].Value = "Password";
+        }
+
+        int startRow = 2; // Empezamos desde la segunda fila (después de los encabezados)
+
+        foreach (var adminData in adminDataList)
+        {
+            worksheet.Cells[startRow, 1].Value = adminData.Username;
+            worksheet.Cells[startRow, 2].Value = adminData.Password;
+
+            startRow++;
+        }
+
+        package.Save();
+    }
 }
+
