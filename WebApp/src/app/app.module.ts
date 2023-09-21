@@ -7,16 +7,6 @@ import { HomeComponent } from './home/home.component';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { ClienteLoginComponent } from './cliente-login/cliente-login.component';
 import { MenuAdminComponent } from './menu-admin/menu-admin.component';
-<<<<<<< Updated upstream
-import { RegisterMovieComponent } from './register-movie/register-movie.component';
-import { RegisterSalaComponent } from './register-sala/register-sala.component';
-
-
-=======
-import { SucursalComponent } from './sucursal/sucursal.component';
-import { RegisterSalaComponent } from './register-sala/register-sala.component';
-import { ProyeccionesComponent } from './proyecciones/proyecciones.component';
->>>>>>> Stashed changes
 
 @NgModule({
   declarations: [
@@ -25,14 +15,7 @@ import { ProyeccionesComponent } from './proyecciones/proyecciones.component';
     AdminLoginComponent,
     ClienteLoginComponent,
     MenuAdminComponent,
-<<<<<<< Updated upstream
-    RegisterMovieComponent,
-    RegisterSalaComponent,
-=======
-    SucursalComponent,
-    RegisterSalaComponent,
-    ProyeccionesComponent,
->>>>>>> Stashed changes
+
 
   ],
   imports: [
