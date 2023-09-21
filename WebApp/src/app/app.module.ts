@@ -8,6 +8,7 @@ import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { ClienteLoginComponent } from './cliente-login/cliente-login.component';
 import { MenuAdminComponent } from './menu-admin/menu-admin.component';
 import { RegisterMovieComponent } from './register-movie/register-movie.component';
+import { RegisterSalaComponent } from './register-sala/register-sala.component';
 
 
 
@@ -19,6 +20,7 @@ import { RegisterMovieComponent } from './register-movie/register-movie.componen
     ClienteLoginComponent,
     MenuAdminComponent,
     RegisterMovieComponent,
+    RegisterSalaComponent,
 
    
   ],

@@ -1,7 +1,6 @@
 .primary-container {
     display: flex !important;
     justify-content: center;
-
     width: 100vw;
     height: 92vh;
     position: relative;
@@ -20,6 +19,7 @@
 .login-overlay {
     align-self: center;
     width: 20%;
+    height: 27%;
     border-radius: 10px;
     background-color: rgba(162, 80, 80, 0.5);
     color: rgb(8, 8, 8);
