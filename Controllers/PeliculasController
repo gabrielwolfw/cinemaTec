@@ -1,0 +1,125 @@
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using cinemaTec.Models; 
+using ExcelDataReader;
+using OfficeOpenXml;
+
+namespace cinemaTec.Controllers
+{
+    [Route("api/peliculas")]
+    [ApiController]
+    public class PeliculasController : ControllerBase
+    {
+        private readonly ExcelDbContext _context; 
+
+        public PeliculasController(ExcelDbContext context)
+        {
+            _context = context;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Pelicula>>> GetPeliculas()
+        {
+            try
+            {
+                var peliculas = await _context.Peliculas.ToListAsync();
+                return Ok(peliculas);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PostPelicula([FromBody] Pelicula pelicula)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _context.Peliculas.Add(pelicula);
+                    await _context.SaveChangesAsync();
+                    return Ok("Película registrada exitosamente.");
+                }
+
+                return BadRequest(ModelState);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
+        }
+
+        [HttpPost("cargar")]
+        public IActionResult CargarPeliculas()
+        {
+            try
+            {
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "cinetecbase", "peliculas.xlsx"); 
+                var peliculas = LeerPeliculasDesdeExcel(filePath);
+                
+                if (peliculas.Count > 0)
+                {
+                    _context.Peliculas.AddRange(peliculas);
+                    _context.SaveChanges();
+                    return Ok($"{peliculas.Count} películas cargadas exitosamente.");
+                }
+
+                return BadRequest("No se encontraron películas en el archivo.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
+        }
+
+        private List<Pelicula> LeerPeliculasDesdeExcel(string filePath)
+        {
+            using (var stream = System.IO.File.Open(filePath, FileMode.Open, FileAccess.Read))
+            {
+                using (var reader = ExcelReaderFactory.CreateReader(stream))
+                {
+                    reader.ChangeSheet(0);
+
+                    var peliculas = new List<Pelicula>();
+
+                    while (reader.Read())
+                    {
+                        var nombreOriginal = reader.GetString(0);
+                        var nombreComercial = reader.GetString(1);
+                        var imagenUrl = reader.GetString(2);
+                        var duracionMinutos = reader.GetInt32(3);
+                        var protagonistas = reader.GetString(4);
+                        var director = reader.GetString(5);
+                        var clasificacion = reader.GetString(6);
+                        
+
+                        if (!string.IsNullOrWhiteSpace(nombreOriginal) && !string.IsNullOrWhiteSpace(nombreComercial))
+                        {
+                            var pelicula = new Pelicula
+                            {
+                                NombreOriginal = nombreOriginal,
+                                NombreComercial = nombreComercial,
+                                ImagenUrl = imagenUrl,
+                                DuracionMinutos = duracionMinutos,
+                                Protagonistas = protagonistas,
+                                Director = director,
+                                Clasificacion = clasificacion
+                                
+                            };
+                            peliculas.Add(pelicula);
+                        }
+                    }
+
+                    return peliculas;
+                }
+            }
+        }
+    }
+}
