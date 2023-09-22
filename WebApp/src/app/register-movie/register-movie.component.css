@@ -1,0 +1,45 @@
+.primary-container {
+    /* display: flex !important;
+    flex: row wrap;
+    justify-content: center; */
+
+    width: 100vw;
+    height: 60vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    margin-top: -15px;
+    background-image: url('https://wallpapercave.com/wp/wp4016025.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: rgba(0, 0, 0, 0.9);
+    
+    
+}
+
+.article-custom {
+    background-color: rgba(255, 255, 255, 0.9) !important;
+    width: 80%;
+    align-self: center;
+    margin: auto;
+    margin-top: 5%;
+}
+
+.btn-save {
+    border-radius: 8px;
+    width: 50%; 
+    margin: auto;
+    color: rgba(0, 0, 0, 0.9);
+}
+
+.product-table {
+    max-height: 300px !important;
+    overflow: auto;
+}
+
+.margin-div {
+    margin-top: 30px;
+}

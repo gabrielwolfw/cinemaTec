@@ -1,0 +1,30 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.css">
+<div class="primary-container">
+  <hr>
+  <div class="card bg-light article-custom">
+    <article class="card-body-mx-auto">
+      <h1 class="card-title mt-3 text-center custom-margin">Bienvenido a CineTEC</h1>
+      <h3 class="card-title mt-3 text-center custom-margin">Por favor seleccione la acción que desea realizar:</h3>
+
+      <div class="row row-custom">
+
+        <div class="col col-custom">
+          <button class="btn" [routerLink]="['/registerMovie']"><i class="fa-solid fa-film"></i>Registrar Película</button>
+        </div>
+
+        <div class="col col-custom">
+          <button class="btn" [routerLink]="['/sucursal']"><i class="fa-solid fa-warehouse"></i>Registrar Sucursal</button>
+        </div>
+
+        <div class="col col-custom">
+          <button class="btn" [routerLink]="['/register-sala']"><i class="fa-solid fa-masks-theater"></i>Registrar sala</button>
+
+        </div>
+
+        <div class="col col-custom">
+            <button class="btn" [routerLink]="['/']"><i class="fa-solid fa-video"></i>Asigar Proyecciones</button>
+          </div>
+      </div>
+    </article>
+  </div>
+</div>

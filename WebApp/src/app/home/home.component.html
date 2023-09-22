@@ -1,0 +1,22 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.css">
+
+<div class="primary-container">
+  <hr>
+  <div class="card bg-light article-custom">
+    <article class="card-body-mx-auto">
+      <h1 class="card-title mt-3 text-center custom-margin">Bienvenidos a CineTEC</h1>
+      <h3 class="card-title mt-3 text-center custom-margin">Por favor seleccione como desea ingresar:</h3>
+      <div class="row row-custom">
+
+
+        <div class="col col-custom">
+          <button class="btn" [routerLink]="['/adminLogin']"><i class="fa-solid fa-user-shield"></i>Admin</button>
+        </div>
+
+        <div class="col col-custom">
+          <button class="btn" [routerLink]="['/clienteLogin']"><i class="fa-solid fa-users"></i>Cliente</button>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>
