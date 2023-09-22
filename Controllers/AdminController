@@ -49,12 +49,30 @@ namespace cinemaTec.Controllers{
             return Unauthorized();
         }
 
-        private string GenerateJwtToken(AdminData admin)
+       private string GenerateJwtToken(AdminData admin)
+{
+    // Genera la llave secreta
+    var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("admin123"));
+
+    // Configura la información del token
+    var tokenDescriptor = new SecurityTokenDescriptor
+    {
+        Subject = new ClaimsIdentity(new[]
         {
-            // Genera y devuelve un token JWT aquí
-            // Puedes usar las bibliotecas de autenticación de ASP.NET Core para hacerlo
-            return "TuTokenJWTGenerado";
-        }
+            new Claim(ClaimTypes.Name, admin.Username), // informacion del token
+        }),
+        Expires = DateTime.UtcNow.AddDays(7), //tiempo valido del token
+        SigningCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256Signature)
+    };
+
+    // Crea el token
+    var tokenHandler = new JwtSecurityTokenHandler();
+    var token = tokenHandler.CreateToken(tokenDescriptor);
+
+    // Devuelve el token como una cadena
+    return tokenHandler.WriteToken(token);
+}
+
     }
         [HttpPost("register")]
     public IActionResult Register([FromBody] AdminData newAdmin)
@@ -90,7 +108,7 @@ namespace cinemaTec.Controllers{
                 adminDataList.Add(newAdmin);
                 SaveAdminDataToExcel(adminDataList, filePath);
 
-                // Retorna un mensaje de éxito
+                // regresa un mensaje
                 return Ok("Registro exitoso.");
             }
         }
