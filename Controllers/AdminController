@@ -37,8 +37,7 @@ namespace cinemaTec.Controllers{
 
                     if (admin != null)
                     {
-                        // Autenticación exitosa, puedes generar un token JWT aquí
-                        // y devolverlo como respuesta
+                        // Genera el token JWT y lo devuelve como respuesta
                         var token = GenerateJwtToken(admin);
                         return Ok(new { Token = token });
                     }
@@ -143,4 +142,5 @@ namespace cinemaTec.Controllers{
         package.Save();
     }
 }
+    }
 

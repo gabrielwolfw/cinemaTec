@@ -1,0 +1,11 @@
+public class Pelicula
+{
+    public int Id { get; set; }
+    public string NombreOriginal { get; set; }
+    public string NombreComercial { get; set; }
+    public string ImagenUrl { get; set; }
+    public int DuracionMinutos { get; set; }
+    public string Protagonistas { get; set; }
+    public string Director { get; set; }
+    public string Clasificacion { get; set; }
+}
