@@ -65,18 +65,17 @@ namespace cinemaTec.Controllers{
         [HttpGet("{salaid}")]
         public IActionResult GetSalaPorId(int salaid){
             try{
+                List<Sala> salas = new();
+                Sala? sala = salas.FirstOrDefault(s => s.SalaId == salaid);
 
-
-                if(salaid > 0){
-                    // Buscar la sala con un Id especifico
-                    Sala? sala = salas.FirstOrDefault(s => s.SalaId == salaid);
-                    if(sala != null){
-                        return Ok(sala);
-                    }else{
-                        return NotFound($"Sala con ID {salaid} no encontrada.");
-                    }
+                if (sala != null)
+                {
+                    return Ok(sala);
                 }
-                return Ok(null);
+                else
+                {
+                    return NotFound($"Sala con ID {salaid} no encontrada.");
+                }
             }catch(Exception ex){
                 return StatusCode(500, $"Error interno del servidor: {ex.Message}");
             }
